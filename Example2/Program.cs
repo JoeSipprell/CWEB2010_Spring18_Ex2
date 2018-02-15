@@ -48,6 +48,28 @@ namespace Example2
                 Console.WriteLine(i.Message);
             }
 
+            //Calling this method
+            getHighAccounts(accounts);
+
+        }
+
+        public static void getHighAccounts(List<Account> accounts)
+        {
+
+            var highAccounts =
+                from acct in accounts //Data set
+                where acct.acctBalance > 8000.0  //formatted query
+                orderby acct.lname  
+                select new { acct.acctBalance, acct.fname, acct.lname }; //outputing selected properties
+
+            Console.WriteLine("Outputing accounts that are above $8,000");
+            foreach(var acct in highAccounts)
+            {
+                Console.WriteLine($"First Name: {acct.fname}  Last Name: {acct.lname}  Account Balance: {acct.acctBalance} ");
+            }
+
+
+
 
 
 
@@ -72,6 +94,7 @@ namespace Example2
             this.fname = fname;
             this.lname = lname;
             this.acctBalance = acctBalance;
+            dateCreated = DateTime.Now;
         }
 
         public override string ToString()
@@ -84,6 +107,11 @@ namespace Example2
 
     class BalanceBelowZero : Exception
     {
+        private static string outputMessage = "Found Account below zero.";
 
+        public BalanceBelowZero() : base(outputMessage)
+        {
+
+        }
     }
 }
