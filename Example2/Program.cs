@@ -24,7 +24,7 @@ namespace Example2
             Account anAccount;
             const char DELIMITER = ',';
             string[] arrayOfValues;
-            const string FILEPATH = @"C:\Users\fulchr\Box Sync\Spring 2018\acct_ex.csv";
+            const string FILEPATH = @"C:\Users\fulchr\Box Sync\CWEB2010\Spring 2018\acct_ex.csv";
             Random randAcctNum = new Random();
 
 
@@ -78,5 +78,12 @@ namespace Example2
         {
             return String.Format($"Account Number: {acctNum} \nFirst Name: {fname} \nLast Name: {lname} \nAccount Balance: {acctBalance} \nDate Account Created: {dateCreated} \n\n");
         }
+
+
+    }//End of Account Class
+
+    class BalanceBelowZero : Exception
+    {
+
     }
 }
