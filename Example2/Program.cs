@@ -56,7 +56,7 @@ namespace Example2
         public static void getHighAccounts(List<Account> accounts)
         {
 
-            var highAccounts =
+            var highAccounts =  //Query name
                 from acct in accounts //Data set
                 where acct.acctBalance > 8000.0  //formatted query
                 orderby acct.lname  
