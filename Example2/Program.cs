@@ -21,7 +21,9 @@ namespace Example2
         {
             //DECLARATIONS
             List<Account> accounts = new List<Account>();
-            Account anAccount;
+            Checking checkAccount;
+            Savings savingsAccount;
+            CD cdAccount;
             const char DELIMITER = ',';
             string[] arrayOfValues;
             const string FILEPATH = @"C:\Users\fulchr\Box Sync\CWEB2010\Spring 2018\acct_ex.csv";
@@ -36,9 +38,29 @@ namespace Example2
                 while (!read.EndOfStream)
                 {
                     arrayOfValues = read.ReadLine().Split(DELIMITER);  //Splitting the information at delimiter of ','
-                    anAccount = new Account(randAcctNum.Next(100, 999), arrayOfValues[0], arrayOfValues[1], Convert.ToDouble(arrayOfValues[2]));
-                    Console.WriteLine(anAccount);
-                    accounts.Add(anAccount);
+                    switch (arrayOfValues[3])
+                    {
+                        case "Checking":
+                            checkAccount = new Checking(randAcctNum.Next(100, 999), arrayOfValues[0], arrayOfValues[1], Convert.ToDouble(arrayOfValues[2]), arrayOfValues[3]);
+                            Console.WriteLine(checkAccount);
+                            accounts.Add(checkAccount);
+
+                            break;
+                        case "Saving":
+                            savingsAccount = new Savings(randAcctNum.Next(100, 999), arrayOfValues[0], arrayOfValues[1], Convert.ToDouble(arrayOfValues[2]), arrayOfValues[3]);
+                            Console.WriteLine(savingsAccount);
+                            accounts.Add(savingsAccount);
+                            break;
+                        case "CD":
+                            cdAccount = new CD(randAcctNum.Next(100, 999), arrayOfValues[0], arrayOfValues[1], Convert.ToDouble(arrayOfValues[2]), arrayOfValues[3]);
+                            Console.WriteLine(cdAccount);
+                            accounts.Add(cdAccount);
+                            break;
+                        default:
+                            Console.WriteLine("An account does not have a type");
+                            break;
+                    }
+
                 }
                 read.Close();
                 file.Close();
@@ -59,7 +81,7 @@ namespace Example2
             var highAccounts =  //Query name
                 from acct in accounts //Data set
                 where acct.acctBalance > 8000.0  //formatted query
-                orderby acct.lname  
+                orderby acct.lname
                 select new { acct.acctBalance, acct.fname, acct.lname }; //outputing selected properties
 
             Console.WriteLine("Outputing accounts that are above $8,000");
@@ -76,31 +98,30 @@ namespace Example2
         }
     }
 
-    class Account
+    abstract class Account
     {
         public int acctNum { get; set; }
         public string fname { get; set; }
         public string lname { get; set; }
         public double acctBalance { get; set; }
         public DateTime dateCreated { get; set; }
+        public string accountType { get; set; }
 
         public Account()
         {
 
         }
-        public Account(int acctNum, string fname, string lname, double acctBalance)
+        public Account(int acctNum, string fname, string lname, double acctBalance, string acctType)
         {
             this.acctNum = acctNum;
             this.fname = fname;
             this.lname = lname;
             this.acctBalance = acctBalance;
             dateCreated = DateTime.Now;
+            accountType = acctType;
+
         }
 
-        public override string ToString()
-        {
-            return String.Format($"Account Number: {acctNum} \nFirst Name: {fname} \nLast Name: {lname} \nAccount Balance: {acctBalance} \nDate Account Created: {dateCreated} \n\n");
-        }
 
 
     }//End of Account Class
