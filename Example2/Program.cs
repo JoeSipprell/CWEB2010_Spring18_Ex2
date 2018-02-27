@@ -70,7 +70,7 @@ namespace Example2
                 }
                 read.Close();
                 file.Close();
-                return accounts;
+
 
             }
             catch (Exception i)
@@ -110,7 +110,7 @@ namespace Example2
             List<Double> withdraw = new List<Double>();
             const char DELIMITER = ',';
             string[] arrayOfValues;
-            const string FILEPATH = @"C:\Users\fulchr\Box Sync\CWEB2010\Spring 2018\acct_ex.csv";
+            const string FILEPATH = @"C:\Users\fulchr\Box Sync\CWEB2010\Spring 2018\acct_deposit_withdraw.csv";
 
             try
             {
@@ -126,15 +126,11 @@ namespace Example2
 
 
 
-
                 }
                 read.Close();
                 file.Close();
 
-                foreach (var i in list)
-                {
-                  
-                }
+
 
             }
             catch (Exception i)
@@ -143,8 +139,9 @@ namespace Example2
             }
 
         }
+    }
 
-        abstract class Account
+        public abstract class Account
         {
             public int acctNum { get; set; }
             public string fname { get; set; }
@@ -169,9 +166,7 @@ namespace Example2
             }
 
 
-
-
-        }//End of Account Class
+    }//End of Account Class
 
         class BalanceBelowZero : Exception
         {
@@ -183,5 +178,5 @@ namespace Example2
             }
         }
 
-    }
+    
 }

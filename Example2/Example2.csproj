@@ -44,6 +44,7 @@
   <ItemGroup>
     <Compile Include="CD.cs" />
     <Compile Include="Checking.cs" />
+    <Compile Include="IBankAccountFunction.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Savings.cs" />
