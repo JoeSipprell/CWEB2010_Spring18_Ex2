@@ -10,19 +10,22 @@ namespace Example2
     {
         static void Main(string[] args)
         {
-            readInAccounts();
+            List<Account> listOfAccounts = new List<Account>();
+            listOfAccounts = readInAccounts();
+            getWithdrawDeposit(listOfAccounts);
 
 
 
 
         }//End of main method
 
-        public static void readInAccounts()
+        public static List<Account> readInAccounts()
         {
             //DECLARATIONS
             List<Account> accounts = new List<Account>();
+
+            Savings savAccount;
             Checking checkAccount;
-            Savings savingsAccount;
             CD cdAccount;
             const char DELIMITER = ',';
             string[] arrayOfValues;
@@ -40,38 +43,45 @@ namespace Example2
                     arrayOfValues = read.ReadLine().Split(DELIMITER);  //Splitting the information at delimiter of ','
                     switch (arrayOfValues[3])
                     {
+                        case "Saving":
+                            savAccount = new Savings(randAcctNum.Next(100, 999), arrayOfValues[0], arrayOfValues[1], Convert.ToDouble(arrayOfValues[2]), arrayOfValues[3]);
+                            Console.WriteLine(savAccount);
+                            accounts.Add(savAccount);
+                            break;
                         case "Checking":
                             checkAccount = new Checking(randAcctNum.Next(100, 999), arrayOfValues[0], arrayOfValues[1], Convert.ToDouble(arrayOfValues[2]), arrayOfValues[3]);
                             Console.WriteLine(checkAccount);
                             accounts.Add(checkAccount);
+                            break;
 
-                            break;
-                        case "Saving":
-                            savingsAccount = new Savings(randAcctNum.Next(100, 999), arrayOfValues[0], arrayOfValues[1], Convert.ToDouble(arrayOfValues[2]), arrayOfValues[3]);
-                            Console.WriteLine(savingsAccount);
-                            accounts.Add(savingsAccount);
-                            break;
                         case "CD":
                             cdAccount = new CD(randAcctNum.Next(100, 999), arrayOfValues[0], arrayOfValues[1], Convert.ToDouble(arrayOfValues[2]), arrayOfValues[3]);
                             Console.WriteLine(cdAccount);
                             accounts.Add(cdAccount);
                             break;
                         default:
-                            Console.WriteLine("An account does not have a type");
+                            Console.WriteLine("Account is not assigned a type");
                             break;
                     }
+
+
+
 
                 }
                 read.Close();
                 file.Close();
+                return accounts;
 
-            }catch(Exception i)
+            }
+            catch (Exception i)
             {
-                Console.WriteLine(i.Message);
+                Console.WriteLine(i.StackTrace);
             }
 
             //Calling this method
             getHighAccounts(accounts);
+
+            return accounts;
 
         }
 
@@ -85,54 +95,93 @@ namespace Example2
                 select new { acct.acctBalance, acct.fname, acct.lname }; //outputing selected properties
 
             Console.WriteLine("Outputing accounts that are above $8,000");
-            foreach(var acct in highAccounts)
+            foreach (var acct in highAccounts)
             {
                 Console.WriteLine($"First Name: {acct.fname}  Last Name: {acct.lname}  Account Balance: {acct.acctBalance} ");
+            }
+
+        }
+
+        public static void getWithdrawDeposit(List<Account> list)
+        {
+
+
+            List<Double> deposit = new List<Double>();
+            List<Double> withdraw = new List<Double>();
+            const char DELIMITER = ',';
+            string[] arrayOfValues;
+            const string FILEPATH = @"C:\Users\fulchr\Box Sync\CWEB2010\Spring 2018\acct_ex.csv";
+
+            try
+            {
+                FileStream file = new FileStream(FILEPATH, FileMode.Open, FileAccess.Read);
+                StreamReader read = new StreamReader(file);
+
+                while (!read.EndOfStream)
+                {
+
+                    arrayOfValues = read.ReadLine().Split(DELIMITER);  //Splitting the information at delimiter of ','
+                    deposit.Add(Convert.ToDouble(arrayOfValues[0]));
+                    withdraw.Add(Convert.ToDouble(arrayOfValues[1]));
+
+
+
+
+                }
+                read.Close();
+                file.Close();
+
+                foreach (var i in list)
+                {
+                  
+                }
+
+            }
+            catch (Exception i)
+            {
+                Console.WriteLine(i.StackTrace);
+            }
+
+        }
+
+        abstract class Account
+        {
+            public int acctNum { get; set; }
+            public string fname { get; set; }
+            public string lname { get; set; }
+            public double acctBalance { get; set; }
+            public DateTime dateCreated { get; set; }
+            public string accountType { get; set; }
+
+            public Account()
+            {
+
+            }
+            public Account(int acctNum, string fname, string lname, double acctBalance, string acctType)
+            {
+                this.acctNum = acctNum;
+                this.fname = fname;
+                this.lname = lname;
+                this.acctBalance = acctBalance;
+                dateCreated = DateTime.Now;
+                accountType = acctType;
+
             }
 
 
 
 
+        }//End of Account Class
 
-
-        }
-    }
-
-    abstract class Account
-    {
-        public int acctNum { get; set; }
-        public string fname { get; set; }
-        public string lname { get; set; }
-        public double acctBalance { get; set; }
-        public DateTime dateCreated { get; set; }
-        public string accountType { get; set; }
-
-        public Account()
+        class BalanceBelowZero : Exception
         {
+            private static string outputMessage = "Found Account below zero.";
 
-        }
-        public Account(int acctNum, string fname, string lname, double acctBalance, string acctType)
-        {
-            this.acctNum = acctNum;
-            this.fname = fname;
-            this.lname = lname;
-            this.acctBalance = acctBalance;
-            dateCreated = DateTime.Now;
-            accountType = acctType;
+            public BalanceBelowZero() : base(outputMessage)
+            {
 
+            }
         }
 
-
-
-    }//End of Account Class
-
-    class BalanceBelowZero : Exception
-    {
-        private static string outputMessage = "Found Account below zero.";
-
-        public BalanceBelowZero() : base(outputMessage)
-        {
-
-        }
     }
 }
