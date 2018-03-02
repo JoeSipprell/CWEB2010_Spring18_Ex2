@@ -141,7 +141,7 @@ namespace Example2
         }
     }
 
-        public abstract class Account
+        public abstract class Account : IBankAccountFunction
         {
             public int acctNum { get; set; }
             public string fname { get; set; }
@@ -165,7 +165,9 @@ namespace Example2
 
             }
 
-
+        public abstract void Deposit(double depo);
+        public abstract void WithDraw(double withdraw);
+        public abstract double Balance();
     }//End of Account Class
 
         class BalanceBelowZero : Exception

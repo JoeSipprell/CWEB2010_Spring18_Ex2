@@ -26,6 +26,18 @@ namespace Example2
         {
             acctBalance += OPENING_FUNDS;
         }
+        public override void Deposit(double depo)
+        {
+            acctBalance += depo;
+        }
+        public override void WithDraw(double withdraw)
+        {
+            acctBalance -= withdraw;
+        }
+        public override double Balance()
+        {
+            return acctBalance;
+        }
         public override string ToString()
         {
             return String.Format($"Type of Account: {accountType}\nAccount Number: {acctNum} \nFirst Name: {fname} \nLast Name: {lname} \nAccount Balance: {acctBalance} \n\n");
